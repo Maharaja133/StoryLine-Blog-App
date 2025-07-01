@@ -37,8 +37,8 @@ function HomePage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 px-4 text-gray-100">
-      <h2 className="text-3xl text-gray-900 min-h-screen font-bold mb-6 text-center">All Posts</h2>
+    <div className="max-w-4xl min-h-screen mx-auto mt-10 px-4 text-gray-100">
+      <h2 className="text-3xl text-gray-900 font-bold mb-6 text-center">All Posts</h2>
       {posts.length === 0 ? (
         <p className="text-center text-gray-400">No posts yet.</p>
       ) : (
