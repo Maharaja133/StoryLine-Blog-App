@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import EditPostPage from './pages/EditPostPage';
 import Footer from './components/Footer';
 import AboutPage from './pages/AboutPage';
+import PostDetails from './pages/PostDetails';
 
 function App() {
   return (
@@ -26,14 +27,15 @@ function App() {
           }
       />
       <Route
-  path="/edit/:id"
-  element={
-    <ProtectedRoute>
-      <EditPostPage />
-    </ProtectedRoute>
-  }
-/>
-<Route path="/about" element={<AboutPage />} />
+          path="/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditPostPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/posts/:id" element={<PostDetails />} />
       </Routes>
       <Footer />
       </>

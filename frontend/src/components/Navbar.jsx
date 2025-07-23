@@ -24,6 +24,7 @@ function NavBar() {
         </Link>
 
         <div className="hidden md:flex items-center space-x-6">
+          <Link to="/" className="hover:text-white transition">Posts</Link>
           <Link to="/about" className="hover:text-white transition">About</Link>
           {isAuthenticated && (
             <Link to="/create" className="hover:text-white transition">Create</Link>

@@ -21,52 +21,78 @@ function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray text-gray-100 px-4">
-      <div className="w-full max-w-md bg-gray-100 text-gray-800 p-8 rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-semibold mb-6 text-center">Register</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <input
-            name="username"
-            placeholder="Username"
-            value={form.username}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 rounded-lg bg-gray-200 border border-gray-300 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 "
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 rounded-lg bg-gray-200 border border-gray-300 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 rounded-lg bg-gray-200 border border-gray-300 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
-          <button
-            type="submit"
-            className="w-full bg-gray-600 hover:bg-gray-500 text-white py-2 rounded-lg transition shadow-md"
-          >
-            Register
-          </button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
+          <p className="text-gray-500">Join our community</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              value={form.username}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 transition duration-200 placeholder-gray-400 text-gray-700"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              Email Address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 transition duration-200 placeholder-gray-400 text-gray-700"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 transition duration-200 placeholder-gray-400 text-gray-700"
+            />
+          </div>
+
+          <div className="pt-2">
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              Create Account
+            </button>
+          </div>
         </form>
-          <p className="mt-4 text-sm text-gray-500 text-center">
+
+        <div className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{' '}
           <Link
             to="/login"
-            className="text-gray-800 hover:underline hover:text-black transition"
+            className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline transition-colors"
           >
-            Login
+            Sign in
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );
