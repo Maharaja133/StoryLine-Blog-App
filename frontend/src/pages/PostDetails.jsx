@@ -65,7 +65,7 @@ const PostDetails = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 font-serif text-[#333]">
+    <div className="max-w-4xl mx-auto px-4 py-12 font-serif text-[#333] min-h-screen">
       <article>
         <header className="mb-10">
           <h1 className="text-3xl md:text-5xl font-normal text-black mb-6 leading-tight">
@@ -78,7 +78,7 @@ const PostDetails = () => {
           </div>
         </header>
 
-        <div className="text-lg text-gray-800 leading-relaxed mb-12">
+        <div className="text-lg text-gray-800 leading-relaxed mb-12 ">
           {post.content.split('\n').map((paragraph, i) => (
             <p key={i} className="mb-6">{paragraph}</p>
           ))}
