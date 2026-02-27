@@ -65,7 +65,7 @@ const PostDetails = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 font-serif text-[#333] min-h-screen">
+    <div className="max-w-4xl mx-auto px-4 py-12 font-serif text-[#333]">
       <article>
         <header className="mb-10">
           <h1 className="text-3xl md:text-5xl font-normal text-black mb-6 leading-tight">

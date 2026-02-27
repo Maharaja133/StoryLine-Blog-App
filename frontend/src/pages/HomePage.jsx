@@ -34,7 +34,7 @@ function HomePage() {
         
         <div className="w-full md:w-2/3">
           {loading ? (
-            <div className="text-gray-500 italic min-h-screen">
+            <div className="text-gray-500 italic">
               <p>Loading posts...</p>
             </div>
           ) : (

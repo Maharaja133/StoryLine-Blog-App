@@ -13,22 +13,27 @@ import { PostProvider } from './context/PostContext';
 
 function App() {
   return (
-      <>
-        <PostProvider>
-          <Navbar />
+    <PostProvider>
+      {/* 1. Flex container that takes up at least the full screen height */}
+      <div className="flex flex-col min-h-screen bg-white">
+        
+        <Navbar />
+        
+        {/* 2. Main content wrapper that "grows" to fill empty space */}
+        <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route
               path="/create"
-                element={
+              element={
                 <ProtectedRoute>
                   <CreatePostPage />
                 </ProtectedRoute>
               }
-          />
-          <Route
+            />
+            <Route
               path="/edit/:id"
               element={
                 <ProtectedRoute>
@@ -39,9 +44,12 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/posts/:id" element={<PostDetails />} />
           </Routes>
-          <Footer />  
-        </PostProvider>
-      </>
+        </main>
+        
+        <Footer />  
+
+      </div>
+    </PostProvider>
   );
 }
 
