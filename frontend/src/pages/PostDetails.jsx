@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import axios from '../api/axios';
+import { AuthContext } from '../context/AuthContext';
 
 const PostDetails = () => {
   const { id } = useParams();
+  const { user, isAuthenticated } = useContext(AuthContext);
+  
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [commentText, setCommentText] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -25,82 +30,111 @@ const PostDetails = () => {
     fetchPost();
   }, [id]);
 
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.post(`/posts/${id}/comments`, 
+        { text: commentText },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setPost(res.data);
+      setCommentText('');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to post comment');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center p-6 max-w-md">
-        <div className="animate-pulse flex justify-center mb-4">
-          <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-gray-700 mb-2">Waking up the backend...</h3>
-        <p className="text-gray-500">
-          Just a moment while we wake up the server...
-        </p>
-        <p className="text-blue-600 text-sm mt-1">
-            (Our backend is hosted on Render's free tier and may take 30-60 seconds to load)
-        </p>
-      </div>
+    <div className="max-w-4xl mx-auto px-4 py-20 font-serif text-gray-500 italic min-h-screen">
+      <p>Loading post...</p>
     </div>
   );
 
-  if (error) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center p-6 max-w-md">
-        <div className="text-red-500 mb-4">
-          <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-gray-700 mb-2">{error}</h3>
-        <p className="text-gray-500 mb-4">
-          We couldn't load the requested post.
-        </p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-        >
-          Try Again
-        </button>
-      </div>
-    </div>
-  );
-
-  if (!post) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center p-6 max-w-md">
-        <h3 className="text-lg font-medium text-gray-700">Post not found</h3>
-        <p className="text-gray-500">The requested post doesn't exist or may have been deleted.</p>
-      </div>
+  if (error || !post) return (
+    <div className="max-w-4xl mx-auto px-4 py-20 font-serif text-[#333]">
+      <h3 className="text-2xl mb-4 text-black">{error || 'Post not found'}</h3>
+      <button onClick={() => window.location.reload()} className="bg-[#333] text-white px-6 py-2 text-sm font-bold">Try Again</button>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <article className="bg-white rounded-lg shadow-sm p-6 sm:p-8">
-          <header className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">{post.title}</h1>
-            <div className="flex items-center text-gray-500 space-x-4">
-              <span>By {post.author?.username || 'Anonymous'}</span>
-              <span>•</span>
-              <span>
-                {new Date(post.createdAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </span>
-            </div>
-          </header>
-
-          <div className="prose max-w-none text-gray-700">
-            {post.content.split('\n').map((paragraph, i) => (
-              <p key={i} className="mb-4">{paragraph}</p>
-            ))}
+    <div className="max-w-4xl mx-auto px-4 py-12 font-serif text-[#333]">
+      <article>
+        <header className="mb-10">
+          <h1 className="text-3xl md:text-5xl font-normal text-black mb-6 leading-tight">
+            {post.title}
+          </h1>
+          <div className="text-sm text-gray-500">
+            <p>
+              Posted on <strong>{new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</strong> by <strong>{post.author?.username || 'Anonymous'}</strong>
+            </p>
           </div>
-        </article>
-      </div>
+        </header>
+
+        <div className="text-lg text-gray-800 leading-relaxed mb-12">
+          {post.content.split('\n').map((paragraph, i) => (
+            <p key={i} className="mb-6">{paragraph}</p>
+          ))}
+        </div>
+
+        <hr className="border-t border-gray-200 mb-6" />
+
+        {post.comments && post.comments.length > 0 && (
+          <div className="mb-10">
+            <h3 className="text-lg text-gray-800 mb-6 font-bold">Comments ({post.comments.length})</h3>
+            <div className="space-y-6">
+              {post.comments.map((comment) => (
+                <div key={comment._id} className="bg-gray-50 p-4 border border-gray-200">
+                  <p className="text-gray-800 mb-2">{comment.text}</p>
+                  <p className="text-xs text-gray-500">
+                    — <strong>{comment.author?.username || 'Unknown'}</strong> on {new Date(comment.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mb-12">
+          <div className="border-t-[3px] border-b border-gray-400 py-2 mb-6">
+            <h3 className="text-lg text-gray-600 uppercase tracking-widest font-normal">Leave a Comment</h3>
+          </div>
+          
+          {isAuthenticated ? (
+            <form onSubmit={handleCommentSubmit} className="border border-gray-300 bg-white p-4">
+              <textarea 
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                required
+                className="w-full min-h-[100px] resize-y outline-none font-serif text-gray-800 placeholder-gray-400"
+                placeholder="Write a comment..."
+              ></textarea>
+              <div className="flex justify-end mt-2">
+                <button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="border border-gray-300 px-6 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Posting...' : 'Comment'}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="bg-gray-50 p-6 text-center border border-gray-200">
+              <p className="text-gray-600 mb-2">You must be logged in to leave a comment.</p>
+              <Link to="/login" className="text-[#0073aa] font-bold hover:underline">Log in here</Link>
+            </div>
+          )}
+        </div>
+
+      </article>
     </div>
   );
 };

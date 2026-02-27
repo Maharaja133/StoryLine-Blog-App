@@ -9,35 +9,38 @@ import EditPostPage from './pages/EditPostPage';
 import Footer from './components/Footer';
 import AboutPage from './pages/AboutPage';
 import PostDetails from './pages/PostDetails';
+import { PostProvider } from './context/PostContext';
 
 function App() {
   return (
       <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/create"
-            element={
-            <ProtectedRoute>
-              <CreatePostPage />
-            </ProtectedRoute>
-          }
-      />
-      <Route
-          path="/edit/:id"
-          element={
-            <ProtectedRoute>
-              <EditPostPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/posts/:id" element={<PostDetails />} />
-      </Routes>
-      <Footer />
+        <PostProvider>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/create"
+                element={
+                <ProtectedRoute>
+                  <CreatePostPage />
+                </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/edit/:id"
+              element={
+                <ProtectedRoute>
+                  <EditPostPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/posts/:id" element={<PostDetails />} />
+          </Routes>
+          <Footer />  
+        </PostProvider>
       </>
   );
 }

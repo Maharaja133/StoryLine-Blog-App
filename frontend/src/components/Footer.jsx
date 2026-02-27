@@ -1,16 +1,18 @@
-import logo from '../assets/logo.jpg';
+import logo from '../assets/logo.png';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-6 px-4 mt-10">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <img src={logo} alt="logo" className="h-6 w-6" />
-          <span className="text-sm text-gray-400">© {new Date().getFullYear()} All rights reserved</span>
+    <footer className="bg-white text-gray-600 py-10 px-4 mt-16  font-serif">
+      <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+        
+        <div className="flex items-center space-x-3 mb-4 md:mb-0">
+          <span>© {new Date().getFullYear()} Maharaja Prabhu's Blog</span>
         </div>
-        <div className="text-sm mt-4 sm:mt-0">
-          <strong className='text-xl'>StoryLine</strong> a MERN Blop-App developed by Maharaja Prabhu.
+
+        <div className="text-gray-500">
+          Developed by <strong>Maharaja Prabhu</strong>
         </div>
+
       </div>
     </footer>
   );

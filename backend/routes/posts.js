@@ -21,9 +21,13 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
+// GET all posts
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', 'username');
+    const posts = await Post.find()
+      .populate('author', 'username')
+      .sort({ createdAt: -1 }); 
+      
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -75,6 +79,32 @@ router.delete('/:id', authMiddleware, async (req, res) => {
   } catch (err) {
     console.error('Delete error:', err);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/:id/comments', authMiddleware, async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ message: 'Comment text is required' });
+
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    const newComment = {
+      text,
+      author: req.user.userId
+    };
+
+    post.comments.push(newComment);
+    await post.save();
+
+    const updatedPost = await Post.findById(req.params.id)
+      .populate('author', 'username')
+      .populate('comments.author', 'username');
+
+    res.status(201).json(updatedPost);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
