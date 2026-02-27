@@ -1,11 +1,15 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { PostContext } from '../context/PostContext';
 
 function Sidebar() {
   const { isAuthenticated } = useContext(AuthContext);
   const { posts, loading } = useContext(PostContext);
+  
+  // 1. Add state for the email input and the navigate hook
+  const [emailInput, setEmailInput] = useState('');
+  const navigate = useNavigate();
 
   const recentPosts = posts.slice(0, 5);
 
@@ -26,20 +30,31 @@ function Sidebar() {
     });
   };
 
+  // 2. Handle the form submission
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    // Navigate to register page and pass the email in the route state
+    navigate('/register', { state: { prefilledEmail: emailInput } });
+  };
+
   return (
     <aside className="w-full md:w-1/3 font-serif space-y-10">
       
       {!isAuthenticated && (
-        <div className="flex">
+        // 3. Change this div to a form to handle 'Enter' key presses
+        <form onSubmit={handleRegisterSubmit} className="flex">
           <input 
             type="email" 
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
             placeholder="Type your email..." 
+            required
             className="w-full bg-gray-100 border border-gray-300 p-2 font-sans text-sm outline-none focus:border-gray-500"
           />
-          <button className="bg-[#333] hover:bg-black text-white px-4 py-2 text-sm font-bold transition-colors">
+          <button type="submit" className="bg-[#333] hover:bg-black text-white px-4 py-2 text-sm font-bold transition-colors">
             Register
           </button>
-        </div>
+        </form>
       )}
 
       <div>

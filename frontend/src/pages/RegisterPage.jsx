@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import axios from '../api/axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 function RegisterPage() {
-  const [form, setForm] = useState({ username: '', email: '', password: '' });
+  const location = useLocation();
+  const incomingEmail = location.state?.prefilledEmail || '';
+
+  const [form, setForm] = useState({ username: '', email: incomingEmail, password: '' });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
