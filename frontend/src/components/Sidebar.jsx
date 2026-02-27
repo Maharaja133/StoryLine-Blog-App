@@ -7,7 +7,6 @@ function Sidebar() {
   const { isAuthenticated } = useContext(AuthContext);
   const { posts, loading } = useContext(PostContext);
   
-  // 1. Add state for the email input and the navigate hook
   const [emailInput, setEmailInput] = useState('');
   const navigate = useNavigate();
 
@@ -30,10 +29,8 @@ function Sidebar() {
     });
   };
 
-  // 2. Handle the form submission
   const handleRegisterSubmit = (e) => {
     e.preventDefault();
-    // Navigate to register page and pass the email in the route state
     navigate('/register', { state: { prefilledEmail: emailInput } });
   };
 
@@ -41,7 +38,6 @@ function Sidebar() {
     <aside className="w-full md:w-1/3 font-serif space-y-10">
       
       {!isAuthenticated && (
-        // 3. Change this div to a form to handle 'Enter' key presses
         <form onSubmit={handleRegisterSubmit} className="flex">
           <input 
             type="email" 
